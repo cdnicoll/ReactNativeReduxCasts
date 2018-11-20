@@ -9,7 +9,7 @@ class Header extends React.Component {
     render() {
         return (
             <View style={styles.viewStyle}>
-                <Text style={styles.textStyle}>Albums!</Text>
+                <Text style={styles.textStyle}>{ this.props.headerText }</Text>
             </View>
         );
     }
