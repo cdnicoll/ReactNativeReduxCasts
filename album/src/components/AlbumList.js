@@ -4,7 +4,11 @@ import {
 } from 'react-native';
 
 class AlbumList extends React.Component {
-    <View></View>
+    render() {
+        return (
+            <View></View>
+        );
+    }
 }
 
-export default AlbumList
+export default AlbumList;
