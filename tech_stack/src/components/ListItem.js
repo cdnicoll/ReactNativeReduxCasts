@@ -1,23 +1,59 @@
 import React from 'react';
-import { Text } from 'react-native';
-import { CardSection } from './common'
+import {
+  LayoutAnimation,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import { CardSection } from './common';
+import * as actions from '../actions';
+import { connect } from 'react-redux';
 
 class ListItem extends React.Component {
-    render() {
-        const {titleStyle} = styles
-        return(
-            <CardSection>
-                <Text style={ titleStyle }>{ this.props.library.item.title }</Text>
-            </CardSection>
-        )
+    componentDidUpdate() {
+        LayoutAnimation.spring();
     }
+
+  renderDescription = () => {
+    if (this.props.expanded) {
+      return (
+        <CardSection style={{ flex: 1 }}>
+          <Text>{this.props.library.item.description}</Text>
+        </CardSection>
+      );
+    }
+  };
+
+  render() {
+    const { titleStyle } = styles;
+    const { id, title } = this.props.library.item;
+
+    return (
+      <TouchableWithoutFeedback onPress={() => this.props.selectLibrary(id)}>
+        <View>
+          <CardSection>
+            <Text style={titleStyle}>{title}</Text>
+          </CardSection>
+          {this.renderDescription()}
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
 }
 
 const styles = {
-    titleStyle: {
-        fontSize: 18,
-        paddingLeft: 15
-    }
-}
+  titleStyle: {
+    fontSize: 18,
+    paddingLeft: 15,
+  },
+};
 
-export default ListItem;
+const mapStateToProps = (state, ownPorps) => {
+  const expanded = state.selectedLibraryId === ownPorps.library.item.id;
+  return { expanded };
+};
+
+export default connect(
+  mapStateToProps,
+  actions,
+)(ListItem);
