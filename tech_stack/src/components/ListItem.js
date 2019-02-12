@@ -14,6 +14,11 @@ class ListItem extends React.Component {
         LayoutAnimation.spring();
     }
 
+    componentDidCatch = () => {
+        this.someText = "this is a test"
+        
+    }
+
   renderDescription = () => {
     if (this.props.expanded) {
       return (
