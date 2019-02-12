@@ -4,6 +4,7 @@ import {
   PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
+  LOGIN_USER,
 } from './types';
 
 export const emailChanged = text => {
@@ -21,7 +22,8 @@ export const passwordChanged = text => {
 };
 
 export const loginUser = ({ email, password }) => {
-  return dispatch => {
+    return dispatch => {
+        dispatch({ type: LOGIN_USER })
     // 1. Try to sign in
     // 2. Catch failure, try to create user
     // 3. catch creation and dispatch failure
@@ -29,12 +31,14 @@ export const loginUser = ({ email, password }) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(user => loginUserSuccess(dispatch, user))
-      .catch(() => {
+      .catch(error => {
+        //TODO: Figure out logging
+        console.log(error);
         firebase
           .auth()
           .createUserWithEmailAndPassword(email, password)
           .then(user => loginUserSuccess(dispatch, user))
-          .catch(() => loginUserFail(dispatch))
+          .catch(() => loginUserFail(dispatch));
       });
   };
 };
