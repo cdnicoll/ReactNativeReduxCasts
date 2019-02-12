@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { emailChanged } from '../actions';
+import { emailChanged, passwordChanged } from '../actions';
 import { Card, CardSection, Button, Input } from './common';
 
 class LoginForm extends React.Component {
@@ -8,6 +8,12 @@ class LoginForm extends React.Component {
     this.props.emailChanged(text);
   };
 
+  onPasswordChange(text) {
+    this.props.passwordChanged(text);
+  }
+
+  // below we use .bind(this) what this does is it will bind the 'this' keyword to
+  // the method we pass it, allowing that method to have access to 'this'
   render() {
     return (
       <Card>
@@ -20,7 +26,13 @@ class LoginForm extends React.Component {
           />
         </CardSection>
         <CardSection>
-          <Input label='Password' placeholder='password' />
+          <Input
+            secureTextEntry
+            label='Password'
+            placeholder='password'
+            onChangeText={this.onPasswordChange.bind(this)}
+            value={this.props.password}
+          />
         </CardSection>
         <CardSection>
           <Button>Login</Button>
@@ -31,12 +43,15 @@ class LoginForm extends React.Component {
 }
 
 const mapStateToProps = state => {
+  const { email, password } = state.auth;
+
   return {
-    email: state.auth.email,
+    email,
+    password,
   };
 };
 
 export default connect(
   mapStateToProps,
-  {emailChanged},
+  { emailChanged, passwordChanged },
 )(LoginForm);
