@@ -25,7 +25,6 @@ const RouterComponent = () => {
             key='employeeCreate'
             component={EmployeeCreate}
             title='Create'
-            initial
           />
         </Scene>
       </Scene>
